@@ -1,11 +1,17 @@
+import argparse
 from discord_webhook import DiscordWebhook
-import yaml
 import sys
+import yaml
 
 # https://pypi.org/project/discord-webhook/
 
+parser = argparse.ArgumentParser(description='Send Farm Discord notifications.')
+parser.add_argument('--config', nargs='?', default='./secrets.yaml', type=str, help='YAML config. Default: ./secrets.yaml.')
+
+args = parser.parse_args()
+d = vars(args)
 webhook_url = ''
-with open('secrets.yaml', 'r') as file:
+with open(d['config'], 'r') as file:
   secrets = yaml.safe_load(file)
   if not secrets['discord']['webhook_url']:
     raise ValueError('Missing discord.webhook_url')
