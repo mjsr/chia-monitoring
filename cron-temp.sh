@@ -2,18 +2,19 @@
 
 NOTIFIER="/chia/chia-tools/venv/bin/python /chia/chia-tools/discord-notify.py --config /chia/chia-tools/secrets.yaml"
 
-TEMPS="Temperature of the NVMEs: "
 
-# Board
+TEMPS="Storage temperature:"
 
-TEMP=$(smartctl --all /dev/nvme0n1 | grep "^Temperature" | tr -s [:space:] | awk '{print $2}')
-TEMPS="$TEMPS $TEMP"
-
-# Raid
-for n in {1..4}
+for d in "nvme0n1" "nvme1n1" "nvme2n1" "nvme3n1" "nvme4n1"
 do
-TEMP=$(smartctl --all /dev/nvme${n}n1 | grep "^Temperature" | tr -s [:space:] | awk '{print $2}')
-TEMPS="$TEMPS $TEMP"
+TEMP=$(/usr/sbin/smartctl --all /dev/${d} | grep "^Temperature" | tr -s [:space:] | awk -v device="${d}" '{print device ": " $2}')
+TEMPS="$TEMPS\n$TEMP°C"
 done
 
-echo $TEMPS | $NOTIFIER
+for d in "sda"
+do
+TEMP=$(/usr/sbin/smartctl --all /dev/${d} | grep "Temperature_Celsius" | awk -v device="${d}" '{print device ": " $10}')
+TEMPS="$TEMPS\n$TEMP°C"
+done
+
+echo -e $TEMPS | $NOTIFIER
