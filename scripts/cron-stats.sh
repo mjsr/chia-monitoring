@@ -17,7 +17,7 @@ ALL_PLOTS=$(grep -rh "^Time for phase 1" ${CHIA_PLOTS_LOGS_PATH} | awk '{ total 
 MESSAGE="${MESSAGE}\n\tFor all plots: ${ALL_PLOTS}"
 
 for n in {5..3}; do
-    LAST_N=$(ls -tr ${CHIA_PLOTS_LOGS_PATH} | xargs -i cat {} | grep "^Time for phase 1" | tail -n${n} | awk '{ total += $6; count++ } END { print total/count }' | xargs -i date -u +%H:%M:%S -d@{})
+    LAST_N=$(ls -tr ${CHIA_PLOTS_LOGS_PATH} | xargs -i cat ${CHIA_PLOTS_LOGS_PATH}/{} | grep "^Time for phase 1" | tail -n${n} | awk '{ total += $6; count++ } END { print total/count }' | xargs -i date -u +%H:%M:%S -d@{})
     MESSAGE="${MESSAGE}\n\tFor last ${n} plots: ${LAST_N}"
 done
 
@@ -27,7 +27,7 @@ MESSAGE="${MESSAGE}\n\nCompletion average time:"
 MESSAGE="${MESSAGE}\n\tFor all plots: ${ALL_PLOTS}"
 
 for n in {5..3}; do
-    LAST_N=$(ls -tr ${CHIA_PLOTS_LOGS_PATH} | xargs -i cat {} | grep "^Total time" | tail -n${n} | awk '{ total += $4; count++ } END { print total/count }' | xargs -i date -u +%H:%M:%S -d@{})
+    LAST_N=$(ls -tr ${CHIA_PLOTS_LOGS_PATH} | xargs -i cat ${CHIA_PLOTS_LOGS_PATH}/{} | grep "^Total time" | tail -n${n} | awk '{ total += $4; count++ } END { print total/count }' | xargs -i date -u +%H:%M:%S -d@{})
     MESSAGE="${MESSAGE}\n\tFor last ${n} plots: ${LAST_N}"
 done
 
