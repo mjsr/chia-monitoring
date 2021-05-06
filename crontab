@@ -1,3 +1,0 @@
-# Add to crontab and uncomment.
-#30 * * * * /chia/chia-tools/cron-wallet.sh >/dev/null 2>&1
-#30 * * * * /chia/chia-tools/cron-farm.sh >/dev/null 2>&1
