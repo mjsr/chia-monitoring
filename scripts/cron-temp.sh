@@ -14,14 +14,14 @@ TEMPS="Storage temperature:"
 # Temperature:                        27 Celsius
 for d in "nvme0n1" "nvme1n1" "nvme2n1" "nvme3n1" "nvme4n1"; do
     TEMP=$(/usr/sbin/smartctl --all /dev/${d} | grep "^Temperature" | tr -s [:space:] | awk -v device="${d}" '{print device ": " $2}')
-    TEMPS="$TEMPS\n$TEMP°C"
+    TEMPS="$TEMPS\n\t$TEMP°C"
 done
 
 # Example line
 # 194 Temperature_Celsius     0x0022   032   041   000    Old_age   Always       -       32 (0 24 0 0 0)
 for d in "sda"; do
     TEMP=$(/usr/sbin/smartctl --all /dev/${d} | grep "Temperature_Celsius" | awk -v device="${d}" '{print device ": " $10}')
-    TEMPS="$TEMPS\n$TEMP°C"
+    TEMPS="$TEMPS\n\t$TEMP°C"
 done
 
 echo -e $TEMPS | $NOTIFIER
