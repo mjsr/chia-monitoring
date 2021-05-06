@@ -1,10 +1,14 @@
 #!/bin/bash
 
-NOTIFIER="/chia/chia-tools/venv/bin/python /chia/chia-tools/discord-notify.py --config /chia/chia-tools/secrets.yaml"
+# Example:
+# $ crontab -e
+# 30 * * * * /chia/chia-monitoring/scripts/cron-wallet.sh >/dev/null 2>&1
 
-cd /chia/chia-blockchain
-. ./activate
-chia wallet show | ${NOTIFIER}
-deactivate
-cd -
+# Where you have this repo cloned
+CHIA_MONITORING_PATH=/chia/chia-monitoring
+NOTIFIER="${CHIA_MONITORING_PATH}/venv/bin/python ${CHIA_MONITORING_PATH}/discord-notify.py --config ${CHIA_MONITORING_PATH}/secrets.yaml"
 
+# Where your chia installation is
+CHIA_INSTALLATION_PATH=/chia/chia-blockchain
+
+${CHIA_INSTALLATION_PATH}/venv/bin/chia wallet show | ${NOTIFIER}
