@@ -8,7 +8,10 @@
 CHIA_MONITORING_PATH=/chia/monitoring/chia-monitoring
 NOTIFIER="${CHIA_MONITORING_PATH}/venv/bin/python ${CHIA_MONITORING_PATH}/discord-notify.py --config ${CHIA_MONITORING_PATH}/secrets.yaml"
 
-TEMPS="Storage temperature:"
+TEMP=$(/usr/bin/sensors | grep CPUTIN | awk '{print $2}' | sed 's/[^0-9\.]*//g')
+TEMPS="CPU: $TEMP°C"
+
+TEMPS="$TEMPS\nStorage temperature:"
 
 # Example line
 # Temperature:                        27 Celsius
@@ -19,7 +22,7 @@ done
 
 # Example line
 # 194 Temperature_Celsius     0x0022   032   041   000    Old_age   Always       -       32 (0 24 0 0 0)
-for d in "sda"; do
+for d in "sda" "sdb" "sdc" "sdd"; do
     TEMP=$(/usr/sbin/smartctl --all /dev/${d} | grep "Temperature_Celsius" | awk -v device="${d}" '{print device ": " $10}')
     TEMPS="$TEMPS\n\t$TEMP°C"
 done
