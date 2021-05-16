@@ -8,7 +8,7 @@
 CHIA_MONITORING_PATH=/chia/monitoring/chia-monitoring
 NOTIFIER="${CHIA_MONITORING_PATH}/venv/bin/python ${CHIA_MONITORING_PATH}/discord-notify.py --config ${CHIA_MONITORING_PATH}/secrets.yaml"
 
-TEMP=$(/usr/bin/sensors | grep CPUTIN | awk '{print $2}' | sed 's/[^0-9\.]*//g')
+TEMP=$(/usr/bin/sensors | grep Tctl | awk '{print $2}' | sed 's/[^0-9\.]*//g')
 TEMPS="CPU: $TEMP°C"
 
 TEMPS="$TEMPS\nStorage temperature:"
